@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.demos"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="16" />
+    <!-- push权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- cache -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- saoyisao -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <application
+        android:name="com.baidu.frontia.FrontiaApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.example.BaiduPush.BaiduPushActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- push service rich media display -->
+        <activity
+            android:name="com.baidu.android.pushservice.richmedia.MediaViewActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="MediaViewActivity" >
+        </activity>
+        <activity
+            android:name="com.baidu.android.pushservice.richmedia.MediaListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="MediaListActivity"
+            android:launchMode="singleTask" >
+        </activity>
+
+        <!-- 定义的本地广播 -->
+        <receiver android:name="com.example.BaiduPush.Message" >
+            <intent-filter>
+
+                <!-- 接收 push 消息 -->
+                <action android:name="com.baidu.android.pushservice.action.MESSAGE" />
+                <!-- 接收 bind、setTags 等 method 的返回结果 -->
+                <action android:name="com.baidu.android.pushservice.action.RECEIVE" />
+                <!-- 可选。接受通知点击事件，和通知自定义内容 -->
+                <action android:name="com.baidu.android.pushservice.action.notification.CLICK" />
+            </intent-filter>
+        </receiver>
+
+        <!-- push service start -->
+        <!-- 用于接收系统消息以保证 PushService 正常运行 -->
+        <receiver
+            android:name="com.baidu.android.pushservice.PushServiceReceiver"
+            android:process=":bdservice_v1" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="com.baidu.android.pushservice.action.notification.SHOW" />
+                <action android:name="com.baidu.android.pushservice.action.media.CLICK" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Push 服务接收客户端发送的各种请求 -->
+        <!--
+注意：RegistrationReceiver 在 2.1.1 及之前版本有拼写失误，为 RegistratonReceiver ，用
+新版本 SDK 时请更改为如下代码
+        -->
+        <receiver
+            android:name="com.baidu.android.pushservice.RegistrationReceiver"
+            android:process=":bdservice_v1" >
+            <intent-filter>
+                <action android:name="com.baidu.android.pushservice.action.METHOD" />
+                <action android:name="com.baidu.android.pushservice.action.BIND_SYNC" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Push 服务 -->
+        <!-- 注意：在 4.0 (包含)之后的版本需加上如下所示的 intent-filter action -->
+        <service
+            android:name="com.baidu.android.pushservice.PushService"
+            android:exported="true"
+            android:process=":bdservice_v1" >
+            <intent-filter>
+                <action android:name="com.baidu.android.pushservice.action.PUSH_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="api_key"
+            android:value="n0BCb5NN1RbtmgHoFKKqMoR8" />
+
+        <activity
+            android:name="com.example.fileBrower.FileBrowerActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.fileBrower.FileManagerActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.xUtils.activity.DbUtilsActity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.xUtils.activity.HttpDemoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.login.mydemo_login.LoginActivity"
+            android:theme="@android:style/Theme.Translucent"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.login.mydemo_login.LoginInfoActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.saoyisao.fire.view.Capture"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:stateNotNeeded="true"
+                      android:theme="@android:style/Theme.Dialog"
+
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name="com.example.saoyisao.fire.view.BarCodeResult"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.HalfTranslucent"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name="com.example.cache.AfinalImageCacheActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.splash.SplashActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.example.duome_locus.locus.LoginLocusActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.example.duome_locus.locus.SetPasswordActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.example.duome_locus.locus.DuomeActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.example.notepad1.NotepadActivity"
+            android:label="@string/app_name" >
+        </activity>
+         <activity
+            android:name="com.example.notepad1.EditnoteActivity"
+            android:label="@string/app_name" >
+            
+            
+        </activity>
+          <activity
+             
+            android:name="com.example.addressbook.ActivityAddFriends"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+             
+            android:name="com.example.slidingmenu.SlidingmenuActivity"
+            android:label="@string/app_name" >
+        </activity>
+          <activity
+             
+            android:name="com.example.takephoto.TakephotoActivity"
+            android:label="@string/app_name" >
+        </activity>
+    </application>
+
+</manifest>
